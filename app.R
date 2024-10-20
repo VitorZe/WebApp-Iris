@@ -53,7 +53,7 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
   tabPanel(title = "Banco de dados",
            tableOutput("dados")),
   
-  tabPanel(title = "Visualizações",
+  tabPanel(title = "Visualizações 1",
                sidebarLayout(
                      sidebarPanel(
                        h3("Distribuição"),
@@ -89,7 +89,18 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
                       
                       )
                  )
+           ),
+  tabPanel(title = "Visualizações 2",
+           sidebarLayout(
+             sidebarPanel(
+               h3("Scatter e Regressão")
+             ),
+             mainPanel(
+               titlePanel("Visualização")
+             )
            )
+    
+  )
 )
   
   
