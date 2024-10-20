@@ -53,7 +53,7 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
   tabPanel(title = "Banco de dados",
            tableOutput("dados")),
   
-  tabPanel(title = "Visualizações 1",
+  tabPanel(title = "Análises univariadas",
                sidebarLayout(
                      sidebarPanel(
                        h3("Distribuição"),
@@ -64,39 +64,34 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
                          dplyr::select_if(Iris, is.numeric)
                        ),
                        sliderInput("arrasta", "Numero de barras", 
-                                   min = 0, max = 100, value = 30, step = 1),
-                       
-                       h3("Scatterplot e regressão"),
-                       varSelectInput(
-                         "idSelect1",
-                         "Variável X",
-                         dplyr::select_if(Iris, is.numeric)
-                       ),
-                       varSelectInput(
-                         "idSelect2",
-                         "Variável Y",
-                         dplyr::select_if(Iris, is.numeric)
-                       ),           
-                       
+                                   min = 0, max = 100, value = 30, step = 1),           
                        ),
                      mainPanel(
                       titlePanel("Distribuição das variaveis"),
                        plotOutput("graficoDist"),
                        h4("Normalidade"), 
-                       textOutput("idNormalidade"),
-                      titlePanel("Relação entre variaveis"),
-                       plotOutput("graficoCorr")
-                      
+                       textOutput("idNormalidade")
                       )
                  )
            ),
-  tabPanel(title = "Visualizações 2",
+  tabPanel(title = "Analises multivariadas",
            sidebarLayout(
              sidebarPanel(
-               h3("Scatter e Regressão")
+               h3("Scatter e Regressão"),
+               varSelectInput(
+                 "idSelect1",
+                 "Variável X",
+                 dplyr::select_if(Iris, is.numeric)
+               ),
+               varSelectInput(
+                 "idSelect2",
+                 "Variável Y",
+                 dplyr::select_if(Iris, is.numeric)
+               )
              ),
              mainPanel(
-               titlePanel("Visualização")
+               titlePanel("Relação entre variáveis numéricas"),
+               plotOutput("graficoCorr")
              )
            )
     
