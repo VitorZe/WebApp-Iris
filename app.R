@@ -28,7 +28,7 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
          próxima página para entender um pouco mais!")
     ),
     mainPanel(
-      tags$img(src = "AquiO.png")  
+      tags$img(src = "Aquio.png")  
     )
     ),               
                                 
