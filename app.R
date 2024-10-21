@@ -1,4 +1,5 @@
 library(shiny)
+library(bslib)
 library(ggplot2)
 
 setwd("~/1.Progreams/RStudio/Aprendes Shiny/Iris")
@@ -14,9 +15,7 @@ for (x in seq(1:5)){
   colnames(Iris)[x] <- Dici[x]
 }
 
-#front end
-## O que será mostrado
-#fluidPage traz uma pagina com tamanho adaptavel
+#frontend
 ui <- navbarPage(title = "Explorando o Dataset iris",
   
   tabPanel(
@@ -45,7 +44,8 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
           
         ),   
           mainPanel(
-            tags$img(src = "iris_flowers.png")
+            tags$img(src = "iris_flowers.png"),
+            tags$img(src = "iris_flowers2.png")
           ),
           
            ),
@@ -53,6 +53,7 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
   tabPanel(title = "Banco de dados",
            tableOutput("dados")),
   
+  #3. ANALISES UNIVARIADAS
   tabPanel(title = "Análises univariadas",
                sidebarLayout(
                      sidebarPanel(
@@ -64,7 +65,10 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
                          dplyr::select_if(Iris, is.numeric)
                        ),
                        sliderInput("arrasta", "Numero de barras", 
-                                   min = 0, max = 100, value = 30, step = 1),           
+                                   min = 0, max = 100, value = 30, step = 1),
+                       radioButtons("idRadioHist", "Colorir grupo?",
+                                    c("Sim", "Não"),
+                                    selected = "Não")
                        ),
                      mainPanel(
                       titlePanel("Distribuição das variaveis"),
@@ -74,6 +78,7 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
                       )
                  )
            ),
+  #4.ANALISES MULTIVARIADAS
   tabPanel(title = "Analises multivariadas",
            sidebarLayout(
              sidebarPanel(
@@ -98,28 +103,36 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
   )
 )
   
-  
-#backend
-# O que
-
-#input - dados do usuario | output - saidas processadas pelo bagui
+#Backend  
 server <- function(input, output){
-    
+    #Saida da aba "Banco de dados
     output$dados <- renderTable({Iris})
     
-    output$graficoDist <- renderPlot({ggplot(Iris) + 
-                                  geom_histogram(aes(x = !!input$idSelect,
-                                                     fill = Espécie),
-                                                 bins = input$arrasta,
-                                                 alpha = .8,
-                                                 color = "black") +
-                                  theme_minimal()
+    #Aba Analise Univariada
+    #Saida do plot histograma
+    output$graficoDist <- renderPlot({
+      if (input$idRadioHist == "Sim") {
+        ggplot(Iris) + 
+          geom_histogram(aes(x = !!input$idSelect,
+                             fill = Espécie),
+                         bins = input$arrasta,
+                         alpha = .8,
+                         color = "black") +
+          theme_minimal()
+      } else {
+        ggplot(Iris) + 
+          geom_histogram(aes(x = !!input$idSelect),
+                         fill = "steelblue",
+                         bins = input$arrasta,
+                         alpha = .8,
+                         color = "black") +
+          theme_minimal()
+      }
     })
-    
-    output$idNormalidade <- renderText({
-      print(Iris$idSelect)
-                   })
-    
+      
+     
+    #Aba Analise Multivariada
+    #Grafico de correlação/scatter
     output$graficoCorr <- renderPlot({ggplot(Iris) +
                                              geom_point(aes(
                                                x = !!input$idSelect1,
