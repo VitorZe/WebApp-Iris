@@ -16,22 +16,24 @@ for (x in seq(1:5)){
 }
 
 #frontend
-ui <- navbarPage(title = "Explorando o Dataset iris",
+ui <- page_navbar(title = "Explorando o dataset Iris",
+ navset_card_underline(
+  nav_menu("Menu",
   
-  tabPanel(
+   nav_panel(
     title = "Introdução ao site",
     sidebarPanel(
-      h4("Este site traz consigo algumas abas, localizadas no canto superior.
+      tags$img(src = "Aquio.png")
+      ),
+    mainPanel(
+        h4("Este site traz consigo algumas abas, localizadas no canto superior.
        \tcada uma com um titulo que descreve o seu conteudo"),
       h4("Teremos um conjunto de dados que será analisado, pode ir para a
          próxima página para entender um pouco mais!")
-    ),
-    mainPanel(
-      tags$img(src = "Aquio.png")  
     )
     ),               
                                 
-  tabPanel(
+   nav_panel(
     align = "justify",
     title = "Do que se trata?",
         sidebarPanel(
@@ -50,11 +52,11 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
           
            ),
   
-  tabPanel(title = "Banco de dados",
+   nav_panel(title = "Banco de dados",
            tableOutput("dados")),
   
-  #3. ANALISES UNIVARIADAS
-  tabPanel(title = "Análises univariadas",
+   #3. ANALISES UNIVARIADAS
+   nav_panel(title = "Análises univariadas",
                sidebarLayout(
                      sidebarPanel(
                        h3("Distribuição"),
@@ -78,8 +80,8 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
                       )
                  )
            ),
-  #4.ANALISES MULTIVARIADAS
-  tabPanel(title = "Analises multivariadas",
+   #4.ANALISES MULTIVARIADAS
+   nav_panel(title = "Analises multivariadas",
            sidebarLayout(
              sidebarPanel(
                h3("Scatter e Regressão"),
@@ -100,8 +102,11 @@ ui <- navbarPage(title = "Explorando o Dataset iris",
              )
            )
     
+   )
   )
+ )
 )
+
   
 #Backend  
 server <- function(input, output){
