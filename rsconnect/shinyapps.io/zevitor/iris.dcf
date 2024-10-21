@@ -1,0 +1,10 @@
+name: iris
+title:
+username: zevitor
+account: zevitor
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13074287
+bundleId: 9247685
+url: https://zevitor.shinyapps.io/iris/
+version: 1

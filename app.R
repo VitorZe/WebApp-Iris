@@ -2,7 +2,6 @@ library(shiny)
 library(bslib)
 library(ggplot2)
 
-setwd("~/1.Progreams/RStudio/Aprendes Shiny/Iris")
 Iris <- iris
 Dici <- c(
   "Sépala (Comprimento)",
@@ -27,8 +26,8 @@ ui <- page_navbar(title = "Explorando o dataset Iris",
       ),
     mainPanel(
         h4("Este site traz consigo algumas abas, localizadas no canto superior.
-       \tcada uma com um titulo que descreve o seu conteudo"),
-      h4("Teremos um conjunto de dados que será analisado, pode ir para a
+       Cada uma com um titulo que descreve o seu conteudo"),
+      h4("Teremos um conjunto de dados que poderá ser analisado por você, pode ir para a
          próxima página para entender um pouco mais!")
     )
     ),               

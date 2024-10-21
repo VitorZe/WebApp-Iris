@@ -1,0 +1,12 @@
+name: Webapp-Iris
+title: Webapp-Iris
+username: zevitor
+account: zevitor
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13074344
+bundleId: 9247720
+url: https://zevitor.shinyapps.io/Webapp-Iris/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
