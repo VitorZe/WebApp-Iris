@@ -67,12 +67,13 @@ ui <- page_navbar(title = "Explorando o dataset Iris",
                sidebarLayout(
                      sidebarPanel(
                        h3("Distribuição"),
-                       h4("Histograma"),
+                       #Caixa de seleção
                        varSelectInput(
                          "idSelect",
                          "Variável",
                          dplyr::select_if(Iris, is.numeric)
                        ),
+                       h4("Histograma"),
                        sliderInput("arrasta", "Numero de barras", 
                                    min = 0, max = 100, value = 30, step = 1),
                        radioButtons("idRadioHist", "Separar por grupo?",
@@ -82,7 +83,9 @@ ui <- page_navbar(title = "Explorando o dataset Iris",
                      mainPanel(
                       titlePanel("Distribuição das variaveis"),
                        h3("Histograma"),
-                       plotOutput("graficoDist")
+                       plotOutput("idGraficoHist"),
+                       h3("Boxplot"),
+                       plotOutput("idGraficoBox")
                       )
                  )
            ),
@@ -121,7 +124,7 @@ server <- function(input, output){
     
     #Aba Analise Univariada
     ##Saida do plot histograma
-    output$graficoDist <- renderPlot({
+    output$idGraficoHist <- renderPlot({
       if (input$idRadioHist == "Sim") {
         ggplot(Iris) + 
           geom_histogram(aes(x = !!input$idSelect),
@@ -136,12 +139,25 @@ server <- function(input, output){
         ggplot(Iris) + 
           geom_histogram(aes(x = !!input$idSelect),
                          fill = "steelblue",
+                         color = "white",
                          bins = input$arrasta,
-                         alpha = .8,
-                         color = "white") +
+                         alpha = .8) +
           ylab("Contágem") +
           theme_minimal(base_size = 22)
       }
+      })
+    ##Saida do Boxplot
+    output$idGraficoBox <- renderPlot({
+      ggplot(Iris) +
+        geom_violin(aes(Espécie, !!input$idSelect),
+                    fill = "steelblue") +
+        geom_boxplot(aes(Espécie, !!input$idSelect),
+                     fill = "#0f3d72",
+                     color = "#d1ddea",
+                     alpha = .7,
+                     width = .04) +
+        dim(c(7)) +
+        theme_minimal(base_size = 22)
     })
     
     #Aba Analise Multivariada
