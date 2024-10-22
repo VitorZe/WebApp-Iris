@@ -5,7 +5,7 @@ account: zevitor
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 13074344
-bundleId: 9247720
+bundleId: 9247727
 url: https://zevitor.shinyapps.io/Webapp-Iris/
 version: 1
 asMultiple: FALSE

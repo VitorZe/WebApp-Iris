@@ -1,8 +1,14 @@
+#Desenvolvimento do WebApp
 library(shiny)
 library(bslib)
+#Visualização de dados
 library(ggplot2)
+library(plotly)
 
+library(dplyr)
+#Dataset Iris com I maiusculo, para diferenciar
 Iris <- iris
+#Dicionario com a tradução das colunas
 Dici <- c(
   "Sépala (Comprimento)",
   "Sépala (Largura)",
@@ -10,6 +16,8 @@ Dici <- c(
   "Pétala (Largura)",
   "Espécie"
 )
+
+#Loop para substituir cada termo antigo pelo termo novo no dicionario
 for (x in seq(1:5)){
   colnames(Iris)[x] <- Dici[x]
 }
@@ -67,7 +75,7 @@ ui <- page_navbar(title = "Explorando o dataset Iris",
                        ),
                        sliderInput("arrasta", "Numero de barras", 
                                    min = 0, max = 100, value = 30, step = 1),
-                       radioButtons("idRadioHist", "Colorir grupo?",
+                       radioButtons("idRadioHist", "Separar por grupo?",
                                     c("Sim", "Não"),
                                     selected = "Não")
                        ),
@@ -113,41 +121,51 @@ server <- function(input, output){
     output$dados <- renderTable({Iris})
     
     #Aba Analise Univariada
-    #Saida do plot histograma
+    ##Saida do plot histograma
     output$graficoDist <- renderPlot({
       if (input$idRadioHist == "Sim") {
         ggplot(Iris) + 
-          geom_histogram(aes(x = !!input$idSelect,
-                             fill = Espécie),
+          geom_histogram(aes(x = !!input$idSelect),
                          bins = input$arrasta,
-                         alpha = .8,
-                         color = "black") +
-          theme_minimal()
+                         alpha = .8,, 
+                         fill = "steelblue",
+                         color = "white") +
+          facet_wrap(~ Iris$Espécie) +
+          theme_minimal(base_size = 22)
+        #Caso escolha "não"
       } else {
         ggplot(Iris) + 
           geom_histogram(aes(x = !!input$idSelect),
                          fill = "steelblue",
                          bins = input$arrasta,
                          alpha = .8,
-                         color = "black") +
-          theme_minimal()
+                         color = "white") +
+          theme_minimal(base_size = 22)
       }
     })
-      
+    ##Output do teste de normalidade para cada variavel escolhida
+    inputHist <- reactive(shapiro.test(input$idSelect))
+    colunaIris <- reactive(
+          Iris$as.character(input$idSelect)
+        )
+    output$idNormalidade <- renderText({shapiro.test(Iris[,
+      as.character(input$idSelect)] 
+    )})  
      
     #Aba Analise Multivariada
     #Grafico de correlação/scatter
-    output$graficoCorr <- renderPlot({ggplot(Iris) +
-                                             geom_point(aes(
-                                               x = !!input$idSelect1,
-                                               y = !!input$idSelect2,
-                                               color = Espécie)) +
-                                              geom_smooth(aes(
-                                                x = !!input$idSelect1,
-                                                y = !!input$idSelect2),
-                                                method = lm) +
-                                              theme_minimal()
-      
+    output$graficoCorr <- renderPlot({
+      ggplot(Iris) +
+        geom_point(aes(
+          x = !!input$idSelect1,
+          y = !!input$idSelect2,
+          color = Espécie),
+          size = 2) +
+        geom_smooth(aes(
+          x = !!input$idSelect1,
+          y = !!input$idSelect2),
+          method = lm) +
+        theme_minimal(base_size = 22)
     })
 
 }
