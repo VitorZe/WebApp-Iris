@@ -81,9 +81,8 @@ ui <- page_navbar(title = "Explorando o dataset Iris",
                        ),
                      mainPanel(
                       titlePanel("Distribuição das variaveis"),
-                       plotOutput("graficoDist"),
-                       h4("Normalidade"), 
-                       textOutput("idNormalidade")
+                       h3("Histograma"),
+                       plotOutput("graficoDist")
                       )
                  )
            ),
@@ -140,18 +139,11 @@ server <- function(input, output){
                          bins = input$arrasta,
                          alpha = .8,
                          color = "white") +
+          ylab("Contágem") +
           theme_minimal(base_size = 22)
       }
     })
-    ##Output do teste de normalidade para cada variavel escolhida
-    inputHist <- reactive(shapiro.test(input$idSelect))
-    colunaIris <- reactive(
-          Iris$as.character(input$idSelect)
-        )
-    output$idNormalidade <- renderText({shapiro.test(Iris[,
-      as.character(input$idSelect)] 
-    )})  
-     
+    
     #Aba Analise Multivariada
     #Grafico de correlação/scatter
     output$graficoCorr <- renderPlot({
